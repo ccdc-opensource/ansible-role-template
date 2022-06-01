@@ -44,17 +44,18 @@
         {
             "label": "markdownlint",
             "type": "shell",
-            "command": "docker run -it --rm -v ${PWD}:/code pipelinecomponents/markdownlint:latest mdl --config /code/.markdownlint.yml /code",
+            "command": "docker run -it --rm -v ${PWD}:/workdir ghcr.io/igorshubovych/markdownlint-cli:latest /workdir",
             "problemMatcher": {
                 "owner": "markdown",
                 "fileLocation": ["relative", "${workspaceFolder}"],
                 "pattern": [
                     {
-                      "regexp": "^/code/(.*):(\\d+):\\s+(MD\\d+)\\s+(.*)$",
+                      "regexp": "^/workdir/(.*):(\\d+):(\\d+)\\s+(MD\\d+.*?)\\s+(.*)$",
                       "file": 1,
                       "line": 2,
-                      "code": 3,
-                      "message": 4
+                      "column": 3,
+                      "code": 4,
+                      "message": 5
                     }
                   ]
             },
