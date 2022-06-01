@@ -14,7 +14,7 @@ jobs:
       - name: Check for GitHub token to determine reporter type
         run: |
           if [ -z "${{ secrets.REVIEWDOG_TOKEN }}" ]; then
-              echo "REVIEWDOG_REPORTER=github-check" >> $GITHUB_ENV
+              echo "REVIEWDOG_REPORTER=local" >> $GITHUB_ENV
           else
               echo "REVIEWDOG_REPORTER=github-pr-review" >> $GITHUB_ENV
           fi
