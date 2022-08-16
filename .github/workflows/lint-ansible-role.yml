@@ -14,7 +14,7 @@ jobs:
 
       - name: Check for GitHub token to determine reporter type
         run: |
-          if [ -z "${{ secrets.REVIEWDOG_TOKEN }}" ]; then
+          if [ "${{ github.event_name }}" != "pull_request" ]; then
               echo "REVIEWDOG_REPORTER=local" >> $GITHUB_ENV
           else
               echo "REVIEWDOG_REPORTER=github-pr-review" >> $GITHUB_ENV
@@ -27,6 +27,7 @@ jobs:
           filter_mode: nofilter
           level: info
           reporter: ${{ env.REVIEWDOG_REPORTER }}
+          ansiblelint_flags: "."
 
   lint-yaml:
     name: Lint YAML
@@ -37,7 +38,7 @@ jobs:
 
       - name: Check for GitHub token to determine reporter type
         run: |
-          if [ -z "${{ secrets.REVIEWDOG_TOKEN }}" ]; then
+          if [ "${{ github.event_name }}" != "pull_request" ]; then
               echo "REVIEWDOG_REPORTER=local" >> $GITHUB_ENV
           else
               echo "REVIEWDOG_REPORTER=github-pr-review" >> $GITHUB_ENV
@@ -50,6 +51,7 @@ jobs:
           filter_mode: nofilter
           level: info
           reporter: ${{ env.REVIEWDOG_REPORTER }}
+          ansiblelint_flags: "."
 
   lint-markdown:
     name: Lint Markdown
@@ -60,7 +62,7 @@ jobs:
 
       - name: Check for GitHub token to determine reporter type
         run: |
-          if [ -z "${{ secrets.REVIEWDOG_TOKEN }}" ]; then
+          if [ "${{ github.event_name }}" != "pull_request" ]; then
               echo "REVIEWDOG_REPORTER=local" >> $GITHUB_ENV
           else
               echo "REVIEWDOG_REPORTER=github-pr-review" >> $GITHUB_ENV
@@ -73,3 +75,4 @@ jobs:
           filter_mode: nofilter
           level: info
           reporter: ${{ env.REVIEWDOG_REPORTER }}
+          ansiblelint_flags: "."
