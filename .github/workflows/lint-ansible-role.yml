@@ -51,7 +51,7 @@ jobs:
           filter_mode: nofilter
           level: info
           reporter: ${{ env.REVIEWDOG_REPORTER }}
-          ansiblelint_flags: "."
+          yamllint_flags: "."
 
   lint-markdown:
     name: Lint Markdown
@@ -75,4 +75,4 @@ jobs:
           filter_mode: nofilter
           level: info
           reporter: ${{ env.REVIEWDOG_REPORTER }}
-          ansiblelint_flags: "."
+          markdownlint_flags: "."
