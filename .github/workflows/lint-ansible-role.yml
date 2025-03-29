@@ -5,7 +5,8 @@ on: # yamllint disable-line rule:truthy
   - push
 
 jobs:
-  lint:
+  lint-ansible:
+    name: Lint Ansible role
     runs-on: ubuntu-latest
 
     steps:
@@ -13,7 +14,7 @@ jobs:
 
       - name: Check for GitHub token to determine reporter type
         run: |
-          if [ -z "${{ secrets.REVIEWDOG_TOKEN }}" ]; then
+          if [ "${{ github.event_name }}" != "pull_request" ]; then
               echo "REVIEWDOG_REPORTER=local" >> $GITHUB_ENV
           else
               echo "REVIEWDOG_REPORTER=github-pr-review" >> $GITHUB_ENV
@@ -26,6 +27,22 @@ jobs:
           filter_mode: nofilter
           level: info
           reporter: ${{ env.REVIEWDOG_REPORTER }}
+          ansiblelint_flags: "."
+
+  lint-yaml:
+    name: Lint YAML
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Check for GitHub token to determine reporter type
+        run: |
+          if [ "${{ github.event_name }}" != "pull_request" ]; then
+              echo "REVIEWDOG_REPORTER=local" >> $GITHUB_ENV
+          else
+              echo "REVIEWDOG_REPORTER=github-pr-review" >> $GITHUB_ENV
+          fi
 
       - name: Run yamllint
         uses: reviewdog/action-yamllint@v1
@@ -34,6 +51,22 @@ jobs:
           filter_mode: nofilter
           level: info
           reporter: ${{ env.REVIEWDOG_REPORTER }}
+          yamllint_flags: "."
+
+  lint-markdown:
+    name: Lint Markdown
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Check for GitHub token to determine reporter type
+        run: |
+          if [ "${{ github.event_name }}" != "pull_request" ]; then
+              echo "REVIEWDOG_REPORTER=local" >> $GITHUB_ENV
+          else
+              echo "REVIEWDOG_REPORTER=github-pr-review" >> $GITHUB_ENV
+          fi
 
       - name: Run markdownlint
         uses: reviewdog/action-markdownlint@v0
@@ -42,3 +75,4 @@ jobs:
           filter_mode: nofilter
           level: info
           reporter: ${{ env.REVIEWDOG_REPORTER }}
+          markdownlint_flags: "."
